@@ -11,6 +11,7 @@ import {
   resolveCloudflareAiGatewayBaseUrl,
 } from "./cloudflare-ai-gateway.js";
 import { resolveAwsSdkEnvVarName, resolveEnvApiKey } from "./model-auth.js";
+import { discoverOvhcloudModels, OVHCLOUD_BASE_URL } from "./ovhcloud-models.js";
 import {
   buildSyntheticModelDefinition,
   SYNTHETIC_BASE_URL,
@@ -472,6 +473,15 @@ export function buildQianfanProvider(): ProviderConfig {
   };
 }
 
+async function buildOvhcloudProvider(): Promise<ProviderConfig> {
+  const models = await discoverOvhcloudModels();
+  return {
+    baseUrl: OVHCLOUD_BASE_URL,
+    api: "openai-completions",
+    models,
+  };
+}
+
 export async function resolveImplicitProviders(params: {
   agentDir: string;
   explicitProviders?: Record<string, ProviderConfig> | null;
@@ -586,6 +596,13 @@ export async function resolveImplicitProviders(params: {
     resolveApiKeyFromProfiles({ provider: "qianfan", store: authStore });
   if (qianfanKey) {
     providers.qianfan = { ...buildQianfanProvider(), apiKey: qianfanKey };
+  }
+
+  const ovhcloudKey =
+    resolveEnvApiKeyVarName("ovhcloud") ??
+    resolveApiKeyFromProfiles({ provider: "ovhcloud", store: authStore });
+  if (ovhcloudKey) {
+    providers.ovhcloud = { ...(await buildOvhcloudProvider()), apiKey: ovhcloudKey };
   }
 
   return providers;

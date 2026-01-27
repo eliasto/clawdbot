@@ -27,6 +27,7 @@ export type AuthChoiceGroupId =
   | "together"
   | "qianfan"
   | "xai"
+  | "ovhcloud"
   | "custom";
 
 export type AuthChoiceGroup = {
@@ -157,6 +158,12 @@ const AUTH_CHOICE_GROUP_DEFS: {
     choices: ["cloudflare-ai-gateway-api-key"],
   },
   {
+    value: "ovhcloud",
+    label: "OVHcloud AI Endpoints",
+    hint: "European-based with sovereignty and data privacy",
+    choices: ["ovhcloud-api-key"],
+  },
+  {
     value: "custom",
     label: "Custom Provider",
     hint: "Any OpenAI or Anthropic compatible endpoint",
@@ -225,6 +232,11 @@ export function buildAuthChoiceOptions(params: {
     value: "together-api-key",
     label: "Together AI API key",
     hint: "Access to Llama, DeepSeek, Qwen, and more open models",
+  });
+  options.push({
+    value: "ovhcloud-api-key",
+    label: "OVHcloud AI Endpoints API key",
+    hint: "European-based with sovereignty and data privacy",
   });
   options.push({
     value: "github-copilot",

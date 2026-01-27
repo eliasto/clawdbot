@@ -21,6 +21,7 @@ export type AuthChoice =
   | "synthetic-api-key"
   | "venice-api-key"
   | "together-api-key"
+  | "ovhcloud-api-key"
   | "codex-cli"
   | "apiKey"
   | "gemini-api-key"
@@ -108,6 +109,7 @@ export type OnboardOptions = {
   syntheticApiKey?: string;
   veniceApiKey?: string;
   togetherApiKey?: string;
+  ovhcloudApiKey?: string;
   opencodeZenApiKey?: string;
   xaiApiKey?: string;
   qianfanApiKey?: string;
